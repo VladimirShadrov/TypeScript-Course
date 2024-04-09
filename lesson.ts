@@ -1,47 +1,26 @@
-/* Запрос */
-{
-    "topicId": 5,
-    "status": "published" // "draft", "deleted"
-}
-/* Ответ */
-[
-    {
-        "question": "Как осуществляется доставка?",
-        "answer": "быстро!",
-        "tags": [
-            "popular",
-            "new"
-        ],
-        "likes": 3,
-        "status": "published"
-    }
-]
-
-enum statusId {
-  published,
-  draft,
-  deleted,
+interface PayData {
+  sum: number;
+  from: number;
+  to: number;
 }
 
-async function getFaqs(req: {topicId: number; status: statusId}): Promise<
-  {
-        "question": string;
-        "answer": string
-        "tags": string[],
-        "likes": number,
-        "status": statusId
-  }
-> {
-    const res = await fetch('/faqs', {
-        method: 'POST',
-        body: JSON.stringify(req)
-    });
-    const data: {
-        "question": string;
-        "answer": string
-        "tags": string[],
-        "likes": number,
-        "status": statusId
-    } = await res.json();
-    return data;
+interface PayRequest extends PayData {}
+
+interface SuccessResponseData extends PayRequest {
+  databaseId: number;
+}
+
+interface SuccessPayResponse {
+  status: string;
+  data: SuccessResponseData;
+}
+
+interface ErrorPayResponseData {
+  errorMessage: string;
+  errorCode: number;
+}
+
+interface ErrorPayResponse {
+  status: string;
+  data: ErrorPayResponseData;
 }
