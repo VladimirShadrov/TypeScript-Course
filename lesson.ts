@@ -1,26 +1,48 @@
+// // Запрос в виде платежа
+// {
+//     "sum": 10000,
+//     "from": 2,
+//     "to": 4
+// }
+// // Ответ
+// {
+//     "status": "success",
+//     "data": {
+//         "databaseId": 567,
+//         "sum": 10000,
+//         "from": 2,
+//         "to": 4
+//     }
+// },
+// {
+//     "status": "failed",
+//     "data": {
+//         "errorMessage": "Недостаточно средств",
+//         "errorCode": 4
+//     }
+// }
+
 interface PayData {
   sum: number;
   from: number;
   to: number;
 }
 
-interface PayRequest extends PayData {}
-
-interface SuccessResponseData extends PayRequest {
+interface SuccessPayData extends PayData {
   databaseId: number;
 }
 
-interface SuccessPayResponse {
-  status: string;
-  data: SuccessResponseData;
-}
-
-interface ErrorPayResponseData {
+interface ErrorResponseData {
   errorMessage: string;
   errorCode: number;
 }
 
-interface ErrorPayResponse {
+interface SuccessResponse {
   status: string;
-  data: ErrorPayResponseData;
+  data: SuccessPayData;
+}
+
+interface ErrorResponse {
+  status: string;
+  data: ErrorResponseData;
 }
