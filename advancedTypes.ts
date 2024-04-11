@@ -1,3 +1,5 @@
+// Типизируем ответ сервера
+
 // // Запрос в виде платежа
 // {
 //     "sum": 10000,
@@ -37,12 +39,33 @@ interface ErrorResponseData {
   errorCode: number;
 }
 
+enum PayStatus {
+  success = 'success',
+  failed = 'failed',
+}
+
 interface SuccessResponse {
-  status: string;
+  status: PayStatus.success;
   data: SuccessPayData;
 }
 
 interface ErrorResponse {
-  status: string;
+  status: PayStatus.failed;
   data: ErrorResponseData;
+}
+
+// Делаем typeguard ответа
+function isSuccessResponse(resp: SuccessResponse | ErrorResponse): resp is SuccessResponse {
+  if (resp.status === PayStatus.success) {
+    return true;
+  }
+  return false;
+}
+
+function getData(resp: SuccessResponse | ErrorResponse): number {
+  if (isSuccessResponse(resp)) {
+    return resp.data.databaseId;
+  } else {
+    throw new Error(resp.data.errorMessage);
+  }
 }
