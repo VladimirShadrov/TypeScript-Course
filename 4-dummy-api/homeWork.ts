@@ -72,8 +72,8 @@ interface UserCrypto {
 }
 
 enum UserGender {
-  male = 'male',
-  female = 'female',
+  Male = 'male',
+  Female = 'female',
 }
 
 async function getUsers(url: string): Promise<User[]> {
@@ -83,6 +83,8 @@ async function getUsers(url: string): Promise<User[]> {
     if (response.ok) {
       const responseData: ResponseData = await response.json();
       users = [...responseData.users];
+    } else {
+      throw new Error(`Ошибка при получении пользователей: ${response.status}`);
     }
   } catch (error) {
     if (error instanceof Error) {
